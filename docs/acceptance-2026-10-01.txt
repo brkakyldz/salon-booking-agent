@@ -1,0 +1,24 @@
+Model gpt-6-luna, database data/acceptance.db, first open days 2026-10-02 / 2026-10-03
+
+[PASS] 1. availability matches seed data
+       expected ['09:00', '12:00', '12:30', '13:00', '16:00', '16:30', '17:00', '17:30', '18:00']; times in the answer ['09:00', '12:00', '12:30', '13:00', '16:00', '16:30', '17:00', '17:30', '18:00']; answer: 'Free start times for a women’s haircut on Friday, October 2: **09:00, 12:00, 12:30, 13:00, 16:00, 16:30, 17:00, 17:30, and 18:00**.'
+
+[PASS] 2a. booking interrupts; approve writes the row
+       interrupt: {'customer_name': 'Deniz Aydın', 'service': "Women's haircut", 'start_time': '2026-10-02 12:00'}; rows: [(7, '2026-10-02T12:00')]; answer: 'Your women’s haircut is booked for Friday, October 2, 2026, from 12:00 to 13:00. Appointment number: #7.'
+
+[PASS] 2b. reject writes nothing and the customer is told
+       appointments before/after: 7/7; answer: 'Sorry, your beard trim wasn’t booked—the barber is off that afternoon. Would you like me to check another time?'
+
+[PASS] 2c. edit books the edited time
+       rows: [(8, '2026-10-02T13:00')]; answer: 'Your blow-dry is booked for Friday, October 2, from 13:00 to 13:30. The salon owner changed the requested time from 11:00 to 13:00.'
+
+[PASS] 3. conflicting slot refused by the tool
+       tool result after approved clash: 'Note: the salon owner changed this request before it ran. Tell the customer the details in the tool response below, not the ones you proposed. Executed instead: book_appointment with arguments {"customer_name": "Can Er", "service": "Men\'s haircut", "start_time": "2026-10-02 10:30"}.\n\nTool response:\nNOT BOOKED: 2026-10-02 10:30–11:00 overlaps an existing appointment (10:00–11:00).'; direct tool call: 'NOT BOOKED: 2026-10-02 10:00–10:30 overlaps an existing appointment (10:00–11:00).'
+
+[PASS] 4. same thread remembers earlier messages
+       same thread: 'You’re booked under Deniz Aydın for Friday, October 2, 2026, from 12:00 to 13:00.'; new thread: 'I don’t have your name in this chat. What’s your full name? I can look up your upcoming appointment and confirm the time.'
+
+[PASS] 5. traces before and after the interrupt land in LangSmith, in one thread
+       project salon-booking-agent, thread ddb1031a-01e0-4e5c-8231-fd4c6b78b12b: 3 root runs; run 1 stops at HumanInTheLoopMiddleware.after_model: True; run 2 (after approval) contains the book_appointment tool run: True; <LangSmith run link>
+
+7/7 checks passed

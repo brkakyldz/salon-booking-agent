@@ -1,0 +1,9 @@
+{
+  "$schema": "https://langgra.ph/schema.json",
+  "dependencies": ["."],
+  "graphs": {
+    "agent": "./src/salon_booking_agent/graph.py:agent"
+  },
+  "env": ".env",
+  "python_version": "3.12"
+}
