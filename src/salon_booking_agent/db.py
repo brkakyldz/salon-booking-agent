@@ -89,7 +89,7 @@ def db_path() -> Path:
 
 @contextmanager
 def connect(path: Path | None = None) -> Iterator[sqlite3.Connection]:
-    """Open a connection that commits on success and always closes."""
+    """Open an autocommit connection that always closes; callers open their own transactions."""
     target = Path(path) if path else db_path()
     target.parent.mkdir(parents=True, exist_ok=True)
     conn = sqlite3.connect(target, isolation_level=None)  # explicit transactions
@@ -288,7 +288,11 @@ def cancel_appointment(
         raise BookingError(f"Appointment #{appointment_id} is already cancelled.")
     if datetime.fromisoformat(appointment.start_time) <= (now or datetime.now()):
         raise BookingError(f"Appointment #{appointment_id} has already started or taken place.")
-    conn.execute("UPDATE appointments SET status = 'cancelled' WHERE id = ?", (appointment_id,))
+    cur = conn.execute(
+        "UPDATE appointments SET status = 'cancelled' WHERE id = ? AND status = 'booked'", (appointment_id,)
+    )
+    if cur.rowcount != 1:  # cancelled by a concurrent call between the check and the update
+        raise BookingError(f"Appointment #{appointment_id} is already cancelled.")
     cancelled = get_appointment(conn, appointment_id)
     assert cancelled is not None
     return cancelled

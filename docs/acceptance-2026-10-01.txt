@@ -19,6 +19,6 @@ Model gpt-6-luna, database data/acceptance.db, first open days 2026-10-02 / 2026
        same thread: 'You’re booked under Deniz Aydın for Friday, October 2, 2026, from 12:00 to 13:00.'; new thread: 'I don’t have your name in this chat. What’s your full name? I can look up your upcoming appointment and confirm the time.'
 
 [PASS] 5. traces before and after the interrupt land in LangSmith, in one thread
-       project salon-booking-agent, thread ddb1031a-01e0-4e5c-8231-fd4c6b78b12b: 3 root runs; run 1 stops at HumanInTheLoopMiddleware.after_model: True; run 2 (after approval) contains the book_appointment tool run: True; <LangSmith run link>
+       project salon-booking-agent, thread ddb1031a-01e0-4e5c-8231-fd4c6b78b12b: 3 root runs; run 1 stops at HumanInTheLoopMiddleware.after_model: True; run 2 (after approval) contains the book_appointment tool run: True; (run link omitted: the LangSmith project is private)
 
 7/7 checks passed

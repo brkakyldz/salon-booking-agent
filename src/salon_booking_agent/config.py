@@ -1,6 +1,6 @@
 """Environment and model setup, shared by the dev server, the demo and the tests.
 
-Keys live in `.env` at the repository root (see `.env.example`). This module loads
+Keys live in `.env` at the repository root (see `env.example`). This module loads
 it and pins the LangSmith project *before* anything traced runs:
 langsmith caches its environment lookups, so setting them later has no effect.
 """

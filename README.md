@@ -1,5 +1,9 @@
 # Salon Booking Agent
 
+[![CI](https://github.com/brkakyldz/salon-booking-agent/actions/workflows/ci.yml/badge.svg)](https://github.com/brkakyldz/salon-booking-agent/actions/workflows/ci.yml)
+
+*Hands-on project for LangChain Academy's [Foundation: Introduction to LangChain – Python](https://academy.langchain.com/courses/foundation-introduction-to-langchain-python). Built with LangChain `create_agent` with `HumanInTheLoopMiddleware`, typed tools over SQLite, agent-chat-ui and LangSmith tracing.*
+
 A chat assistant for a small hair salon that answers service questions, finds available
 times and manages appointments. Customers can ask in English or Turkish.
 **Every booking and cancellation waits for the salon owner's approval before changing

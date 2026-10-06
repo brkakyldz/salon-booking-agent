@@ -86,8 +86,9 @@ def main() -> int:
     with db.connect() as conn:
         seed(conn, today)
     d1, d2, _ = (d.isoformat() for d in next_open_days(today, 3))
-    agent = build_agent(make_model(), checkpointer=InMemorySaver())
-    print(f"Model {make_model().model_name}, database {db.db_path()}, first open days {d1} / {d2}\n")
+    model = make_model()
+    agent = build_agent(model, checkpointer=InMemorySaver())
+    print(f"Model {model.model_name}, database {db.db_path()}, first open days {d1} / {d2}\n")
 
     # 1. Availability matches the seed.
     with db.connect() as conn:
